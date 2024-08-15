@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: chat-flux-r2dbc
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/chat-flux-r2dbc
+    username: chat
+    password: chat
+
+  liquibase:
+    enabled: false

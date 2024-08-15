@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="chat"></div>
+
+		<p>
+			<input type="text" id="author" placeholder="Input your name" />
+		</p>
+		<p>
+			<input type="text" id="text" placeholder="Input your message" />
+		</p>
+
+		<p>
+			<button onclick="sendMessage()">Send</button>
+		</p>
+
+		<script>
+			const chat = document.querySelector('#chat')
+
+			const eventSource = new EventSource('http://localhost:8080/chat')
+
+			eventSource.onmessage = event => {
+				const message = JSON.parse(event.data)
+
+				chat.innerHTML += `
+			             <p>
+			                 <strong>
+			                 ${message.author}
+			                 </strong>
+			                 :
+			                 <strong>
+			                 ${message.text}
+			                 </strong>
+			         </p>`
+			}
+
+			function sendMessage() {
+				const author = document.querySelector('#author').value
+				const text = document.querySelector('#text').value
+
+				console.log(author)
+				console.log(text)
+
+				fetch('http://localhost:8080/chat', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						author,
+						text,
+					}),
+				})
+			}
+		</script>
+	</body>
+</html>
